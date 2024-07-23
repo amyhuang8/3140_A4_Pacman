@@ -142,26 +142,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     }
 
-    if ($_SERVER["action"] == "sendForm") {
-        // Get the form data
-        $name = htmlspecialchars($_POST['name']);
-        $password = htmlspecialchars($_POST['password']);
-    
-        // Process the data (e.g., save to a database, perform validation, etc.)
-        // For demonstration, we'll just print the data
-        echo "Name: " . $name . "<br>";
-        echo "Password: " . $password . "<br>";
-    
-        error_log("Name: " . $name);
-        error_log("Password: " . $password);
-        // Redirect or perform further actions
-        // header("Location: success_page.php");
-        // exit();
-    } else {
-        // Handle the case where the form was not submitted via POST
-        echo "Invalid request method.";
-    }
-
 }
 
 ?>
@@ -188,35 +168,69 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <link rel="manifest" href="resources/site.webmanifest">
 
         <!--STYLESHEET-->
-        <link rel="stylesheet" href="css/sign_up.css">
+        <link rel="stylesheet" href="css/index.css">
 
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     </head>
 
     <body>
-    <h1>Sign up</h1>
+        <!--HEADER/GAME STATS-->
+        <header>
+            <h1 id="score">Score: 0</h1>
+            <h1 id="high-score">High Score: 0</h1>
+            <h1 id="level">Level: 1</h1>
+            <button id="begin-button" onclick="resetGame();">Start</button>
+        </header>
 
-    <div id="form-bg">
-        <form onsubmit="sendForm()">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
+        <!--GAME BOARD-->
+        <div class="game-borders" style="height: 25vh;">
+            <div class="game-borders" style="height: 20vh;">
+                <div id="game-container" class="game-board"></div>
+            </div>
+        </div>
 
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
-            <label for="location">Location:</label><br>
-            <input type="text" id="location" name="location" required><br><br>
-            <button type="submit">Submit</button>
-        </form>
-</div>
+        <!--INSTRUCTIONS MODAL-->
+        <div id="instructionsModal" class="modal">
+            <div class="modal-content">
+                <h1 class="modal-text">Instructions:</h1>
+                <h1 class="modal-text">Use A/D or left/right arrow keys to change direction!</h1>
+                <h2 class="modal-text">Click outside to START.</h2>
+                <br>
+            </div>
+        </div>
+
+        <!--GAME OVER MODAL-->
+        <div id="gameOverModal" class="modal">
+            <div class="modal-content">
+                <h1 class="modal-text">Game over!</h1>
+                <h1 class="modal-text">Do you want to play again?</h1>
+                <button id="restart">Restart</button>
+            </div>
+        </div>
+
+        <!--LEADERBOARD MODAL-->
+        <div id="leaderboardModal" class="modal">
+            <div class="modal-content">
+                <h1 class="modal-text">Leaderboard:</h1>
+                <ul id="leaderboardList" class="modal-text"></ul>
+                <button id="closeLeaderboard">Close</button>
+            </div>
+        </div>
+
+        <!--AUDIOS-->
+        <audio id="bgm" src="resources/audio/beat_pacman.mp3" loop></audio>
+        <audio id="sfx-fruit" src="resources/audio/sfx_fruit.mp3"></audio>
+        <audio id="sfx-level-up" src="resources/audio/sfx_level-up.mp3"></audio>
+        <audio id="sfx-game-over" src="resources/audio/sfx_game-over.mp3"></audio>
+
         <!--FOOTER-->
         <footer>
+            <button id="leaderboard-button" onclick="displayLeaderboard();">Show Leaderboard</button>
             <p>1D PACMAN 2024</p>
         </footer>
 
         <!--SCRIPT-->
-        <script src="js/user_input.js"></script>
-
+        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>
