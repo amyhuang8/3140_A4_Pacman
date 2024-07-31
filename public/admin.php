@@ -1,5 +1,19 @@
 <?php
 
+// VARIABLE DECLARATION: database information
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "pacman";
+
+// PROCESS: creating new db connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// PROCESS: checking db connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 require_once('../config/_config.php');
 include '../app/models/Game.php';
 
@@ -20,15 +34,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     // PROCESS: handling AJAX
     if ($_POST['action'] === "clearLeaderboard") {
 
-        // PROCESS: clearing the leaderboard
-        $game->clearLeaderboard();
-        $_SESSION['game'] = $game; //updating session var.
+        // PROCESS: preparing the SQL deletion
+        $sql = $conn->prepare("TRUNCATE TABLE leaderboard");
 
-        // OUTPUT:
-        echo json_encode("The leaderboard has been cleared!");
-        exit;
+        // PROCESS: executing the statement
+        try {
+
+            $sql->execute();
+            $sql->close(); //closing sql
+
+            // OUTPUT:
+            echo json_encode("The leaderboard has been cleared!");
+            exit;
+
+        } catch (Exception $e) {
+
+            // OUTPUT:
+            echo json_encode($e->getMessage());
+            exit;
+
+        }
 
     }
+
 }
 
 ?>

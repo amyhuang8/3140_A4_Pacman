@@ -55,11 +55,6 @@ class Game
     private $highScore;
 
     /**
-     * @var int[] the top ten leaderboard of scores
-     */
-    private $leaderboard;
-
-    /**
      * @var int the current game level
      */
     private $level;
@@ -94,7 +89,6 @@ class Game
 
         $this->score = 0;
         $this->highScore = 0;
-        $this->leaderboard = [];
         $this->level = 1;
         $this->gameAdvance = false;
         $this->gameOver = false;
@@ -391,26 +385,6 @@ class Game
     {
         // OUTPUT:
         return $this->highScore;
-    }
-
-    /**
-     * This is a getter function for the current top ten leaderboard.
-     * @return int[] the current leaderboard
-     */
-    public function getLeaderboard(): array
-    {
-        // OUTPUT:
-        return $this->leaderboard;
-    }
-
-    /**
-     * This is a setter function to clear the leaderboard.
-     * @return void
-     */
-    public function clearLeaderboard()
-    {
-        // INITIALIZATION: clearing leaderboard array
-        $this->leaderboard = [];
     }
 
     /**
