@@ -7,6 +7,19 @@
  * Description: This PHP file contains the runtime logic for 1D Pacman.
  */
 
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "pacman";
+
+// Create connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Check connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 require_once('../config/_config.php');
 include '../app/models/Game.php';
 
@@ -142,24 +155,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     }
 
-    if ($_SERVER["action"] == "sendForm") {
-        // Get the form data
-        $name = htmlspecialchars($_POST['name']);
+    if ($_POST["action"] == "sendForm") { //sending sign-up form data
+
+        // VARIABLE DECLARATION:
+        $username = htmlspecialchars($_POST['name']);
         $password = htmlspecialchars($_POST['password']);
-    
-        // Process the data (e.g., save to a database, perform validation, etc.)
-        // For demonstration, we'll just print the data
-        echo "Name: " . $name . "<br>";
-        echo "Password: " . $password . "<br>";
-    
-        error_log("Name: " . $name);
-        error_log("Password: " . $password);
-        // Redirect or perform further actions
-        // header("Location: success_page.php");
-        // exit();
-    } else {
-        // Handle the case where the form was not submitted via POST
-        echo "Invalid request method.";
+        $location = htmlspecialchars($_POST['location']);
+
+        // PROCESS: preparing the SQL insertion
+        $sql = $conn->prepare("INSERT INTO users (username, password, country) VALUES (?, ?, ?)");
+
+        // PROCESS: binding parameters to statement
+        $sql->bind_param("sss", $username, $password, $location);
+
+        // PROCESS: executing the statement
+        try {
+
+            $sql->execute();
+
+            // VARIABLE DECLARATION:
+            $response = [
+                'isSuccess' => true
+            ];
+
+            // OUTPUT:
+            echo json_encode($response);
+            exit;
+
+        } catch (Exception $e) {
+
+            // VARIABLE DECLARATION:
+            $response = [
+                'isSuccess' => false,
+                'errorMsg' => $e->getMessage()
+            ];
+
+            // OUTPUT:
+            echo json_encode($response);
+            exit;
+
+        }
     }
 
 }
@@ -199,15 +234,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     <h1>Sign up</h1>
 
     <div id="form-bg">
-        <form onsubmit="sendForm()">
+        <form id="myForm" onsubmit="sendForm(); return false;">
             <label for="name">Name:</label><br>
             <input type="text" id="name" name="name" required><br><br>
 
             <label for="password">Password:</label><br>
             <input type="password" id="password" name="password" required><br><br>
+
             <label for="location">Location:</label><br>
             <input type="text" id="location" name="location" required><br><br>
+
             <button type="submit">Submit</button>
+            <input type="hidden" name="action" value="sendForm">
         </form>
 </div>
         <!--FOOTER-->
