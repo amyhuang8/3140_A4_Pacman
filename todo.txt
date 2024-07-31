@@ -14,9 +14,10 @@ db:
 
 
 TODO as of July 31:
-- update portfolios
-- update documentations (how to run)
+- add privileges for db connection
 - rename database tables to capitalized names
 - close db connections in the php
+- update portfolios
+- update documentation (how to run)
 - clean code & comments
 - fix form CSS for submit button
