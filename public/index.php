@@ -39,138 +39,24 @@ if (isset($_SESSION['game'])) { //exists
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     // PROCESS: handling AJAX
-    if ($_POST['action'] === "moveGhost") { //moving the ghost
-
-        $game->moveGhost();
-        $_SESSION['game'] = $game; //updating session var.
-
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'score' => $game->getScore(),
-            'isGameOver' => $game->isGameOver(),
-        ];
-
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
-
-    }
-
-    if ($_POST['action'] === "moveLeftPacman") { //moving Pacman to the left
-
-        $game->moveLeftPacman();
-        $_SESSION['game'] = $game; //updating session var.
-
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'isFruitEaten' => $game->isFruitEaten(),
-            'score' => $game->getScore(),
-            'level' => $game->getLevel(),
-            'isGameAdvanced' => $game->isGameAdvanced(),
-            'isGameOver' => $game->isGameOver(),
-        ];
-
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
-
-    }
-
-    if ($_POST['action'] === "moveRightPacman") { //moving Pacman to the right
-
-        $game->moveRightPacman();
-        $_SESSION['game'] = $game; //updating session var.
-
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'isFruitEaten' => $game->isFruitEaten(),
-            'score' => $game->getScore(),
-            'level' => $game->getLevel(),
-            'isGameAdvanced' => $game->isGameAdvanced(),
-            'isGameOver' => $game->isGameOver(),
-        ];
-
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
-
-    }
-
-    if ($_POST['action'] === "advanceLevel") { //advancing the game level
-
-        $game->createNewBoard();
-        $_SESSION['game'] = $game; //updating session var.
-
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-        ];
-
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
-
-    }
-
-    if ($_POST['action'] === "displayLeaderboard") { //showing the leaderboard
-
-        // VARIABLE DECLARATION:
-        $response = [
-            'leaderboard' => $game->getLeaderboard(),
-        ];
-
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
-
-    }
-
-    if ($_POST['action'] === "resetGame") { //resetting the game
-
-        $game->resetGame();
-        $_SESSION['game'] = $game; //updating session var.
-
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'highScore' => $game->getHighScore(),
-            'level' => $game->getLevel(),
-        ];
-
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
-
-    }
-
     if ($_POST["action"] == "sendForm") { //sending game session form data
 
         // VARIABLE DECLARATION:
-        $username = htmlspecialchars($_POST['name']);
+        $name = htmlspecialchars($_POST['name']);
+        $game->setName($name); //updating username
+        $_SESSION['game'] = $game; //updating session var.
+
         $password = htmlspecialchars($_POST['password']);
         $location = htmlspecialchars($_POST['location']);
 
         // PROCESS: checking for admin login
-        if ($username === "admin" && $password === "adminpassword" && $location === "adminoffice") {
+        if ($name === "admin" && $password === "adminpassword" && $location === "adminoffice") {
 
             // PROCESS: preparing the SQL query
             $sql = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");
 
             // PROCESS: binding parameters to statement
-            $sql->bind_param("ss", $username, $password);
+            $sql->bind_param("ss", $name, $password);
 
             $isAdmin = true; //updating flag
 
@@ -180,7 +66,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             $sql = $conn->prepare("INSERT INTO users (username, password, country) VALUES (?, ?, ?)");
 
             // PROCESS: binding parameters to statement
-            $sql->bind_param("sss", $username, $password, $location);
+            $sql->bind_param("sss", $name, $password, $location);
 
             $isAdmin = false; //updating flag
 
@@ -226,6 +112,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
                 ];
 
             }
+
+            $sql->close(); //closing sql
 
             // OUTPUT:
             echo json_encode($response);
@@ -278,7 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <!--SCRIPT-->
-        <script src="js/database.js"></script>
+        <script src="js/index.js"></script>
     </head>
 
     <body>

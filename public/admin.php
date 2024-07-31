@@ -12,7 +12,6 @@ if (isset($_SESSION['game'])) { //exists
     // VARIABLE DECLARATION: new game
     $game = new Game();
     $_SESSION['game'] = $game;
-    error_log("we are here");
 }
 
 // PROCESS: checking for POST req. from front-end
@@ -63,14 +62,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
         <!--SCRIPT-->
-        <script src="js/database.js"></script>
+        <script src="js/index.js"></script>
     </head>
 
     <body>
         <!--ACTION BUTTONS-->
         <button id="clearLeaderboard-button" onclick="clearLeaderboard();">Clear Leaderboard</button>
         <a id="return-home-button" href="index.php">Return Home</a>
-        
+
         <!--FOOTER-->
         <footer>
             <p>1D PACMAN 2024</p>

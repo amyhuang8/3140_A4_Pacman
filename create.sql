@@ -20,3 +20,5 @@ CREATE TABLE leaderboard (
 INSERT INTO users(username, password, country) VALUES ("admin", "adminpassword", "adminoffice");
 
 SELECT * FROM users;
+
+SELECT * FROM leaderboard;

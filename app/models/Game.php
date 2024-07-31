@@ -15,6 +15,11 @@ class Game
 
     // VARIABLE DECLARATION:--------------------------------------------------------------------------------------------
     /**
+     * @var string the current user's name
+     */
+    private $name;
+
+    /**
      * @var int the size of the game board
      */
     private $boardSize;
@@ -77,6 +82,8 @@ class Game
     {
 
         // INITIALIZATION:
+        $this->name = "";
+
         $this->boardSize = 15;
 
         $this->pacman = new Pacman();
@@ -119,25 +126,15 @@ class Game
     }
 
     /**
-     * This helper function updates the high score and leaderboard.
+     * This helper function updates the high score.
      * @return void
      */
-    private function updateLeaderboard()
+    private function updateHighScore()
     {
 
         // PROCESS: checking for new high score
         if ($this->score > $this->highScore) {
             $this->highScore = $this->score; //updating high score
-        }
-
-        // PROCESS: adding new score to leaderboard
-        $this->leaderboard[] = [$this->score];
-
-        rsort($this->leaderboard); //sorting leaderboard
-
-        // PROCESS: keeping only the top ten scores
-        if (count($this->leaderboard) > 10) {
-            $this->leaderboard = array_slice($this->leaderboard, 0, 10);
         }
 
     }
@@ -199,7 +196,7 @@ class Game
         $this->gameOver = $positionGhost === $positionPM;
 
         if ($this->gameOver) { //end game
-            $this->updateLeaderboard(); //updating leaderboard
+            $this->updateHighScore(); //updating leaderboard
         }
 
     }
@@ -292,7 +289,7 @@ class Game
             case "^" : //ghost
 
                 $this->gameOver = true; //updating flag
-                $this->updateLeaderboard(); //updating leaderboard
+                $this->updateHighScore(); //updating leaderboard
                 break;
 
         }
@@ -315,6 +312,27 @@ class Game
     }
 
     // GETTER & SETTER FUNCTIONS----------------------------------------------------------------------------------------
+    /**
+     * This is a getter function for the user's name.
+     * @return string the username
+     */
+    public function getName(): string
+    {
+        // OUTPUT:
+        return $this->name;
+    }
+
+    /**
+     * This setter function sets the user's name.
+     * @param string $name the username
+     * @return void
+     */
+    public function setName(string $name)
+    {
+        // INITIALIZATION:
+        $this->name = $name;
+    }
+
     /**
      * This is a getter function for the direction in which Pacman is moving.
      * @return string Pacman's direction

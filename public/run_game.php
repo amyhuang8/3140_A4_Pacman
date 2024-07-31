@@ -7,6 +7,20 @@
  * Description: This PHP file contains the runtime logic for 1D Pacman.
  */
 
+// VARIABLE DECLARATION: database information
+$servername = "localhost";
+$username = "root";
+$password = "password";
+$dbname = "pacman";
+
+// PROCESS: creating new db connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// PROCESS: checking db connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
 require_once('../config/_config.php');
 include '../app/models/Game.php';
 
@@ -109,12 +123,81 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     }
 
-    if ($_POST['action'] === "displayLeaderboard") { //showing the leaderboard
+    if ($_POST['action'] === "updateLeaderboard") { // updating the leaderboard
 
         // VARIABLE DECLARATION:
+        $name = $game->getName();
+        $score = $game->getScore();
+
+        // PROCESS: preparing the SQL query to check for duplicates
+        $check_sql = $conn->prepare("SELECT COUNT(*) FROM leaderboard WHERE username=? AND highscore=?");
+        $check_sql->bind_param("si", $name, $score);
+
+        // PROCESS: executing the check
+        $check_sql->execute();
+        $check_sql->bind_result($count);
+        $check_sql->fetch();
+        $check_sql->close();
+
+        // PROCESS: checking for duplicate entry
+        if ($count === 0) {
+
+            // PROCESS: preparing the SQL query to insert a new record
+            $sql = $conn->prepare("INSERT INTO leaderboard (username, highscore) VALUES (?, ?)");
+
+            // PROCESS: binding parameters to statement
+            $sql->bind_param("si", $name, $score);
+
+            // PROCESS: executing the statement
+            try {
+
+                $sql->execute();
+                $sql->close();
+
+                // VARIABLE DECLARATION:
+                $response = [
+                    'isSuccess' => true
+                ];
+
+                // OUTPUT:
+                echo json_encode($response);
+                exit;
+
+            } catch (Exception $e) {
+
+                // VARIABLE DECLARATION:
+                $response = [
+                    'isSuccess' => false,
+                    'errorMsg' => $e->getMessage()
+                ];
+
+                // OUTPUT:
+                echo json_encode($response);
+                exit;
+            }
+
+        }
+
+    }
+
+    if ($_POST['action'] === "displayLeaderboard") { //showing the leaderboard
+
+        // PROCESS: preparing the SQL query
+        $sql = $conn->prepare("SELECT * FROM leaderboard ORDER BY highscore DESC LIMIT 10");
+
+        // PROCESS: executing the query
+        $sql->execute();
+
+        // VARIABLE DECLARATION: saving the results
+        $result = $sql->get_result();
+
+        // VARIABLE DECLARATION: fetching all results as an associative array
+        $leaderboard = $result->fetch_all(MYSQLI_ASSOC);
         $response = [
-            'leaderboard' => $game->getLeaderboard(),
+            'leaderboard' => $leaderboard,
         ];
+
+        $sql->close(); //closing sql
 
         // OUTPUT:
         echo json_encode($response);
@@ -231,6 +314,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         </footer>
 
         <!--SCRIPT-->
-        <script type="text/javascript" src="js/index.js"></script>
+        <script type="text/javascript" src="js/run_game.js"></script>
     </body>
 </html>
