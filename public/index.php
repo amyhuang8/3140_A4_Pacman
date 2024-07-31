@@ -7,15 +7,16 @@
  * Description: This PHP file contains the runtime logic for 1D Pacman.
  */
 
+// VARIABLE DECLARATION: database information
 $servername = "localhost";
 $username = "root";
 $password = "password";
 $dbname = "pacman";
 
-// Create connection
+// PROCESS: creating new db connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
+// PROCESS: checking db connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -155,28 +156,76 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     }
 
-    if ($_POST["action"] == "sendForm") { //sending sign-up form data
+    if ($_POST["action"] == "sendForm") { //sending game session form data
 
         // VARIABLE DECLARATION:
         $username = htmlspecialchars($_POST['name']);
         $password = htmlspecialchars($_POST['password']);
         $location = htmlspecialchars($_POST['location']);
 
-        // PROCESS: preparing the SQL insertion
-        $sql = $conn->prepare("INSERT INTO users (username, password, country) VALUES (?, ?, ?)");
+        // PROCESS: checking for admin login
+        if ($username === "admin" && $password === "adminpassword" && $location === "adminoffice") {
 
-        // PROCESS: binding parameters to statement
-        $sql->bind_param("sss", $username, $password, $location);
+            // PROCESS: preparing the SQL query
+            $sql = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");
+
+            // PROCESS: binding parameters to statement
+            $sql->bind_param("ss", $username, $password);
+
+            $isAdmin = true; //updating flag
+
+        } else {
+
+            // PROCESS: preparing the SQL insertion
+            $sql = $conn->prepare("INSERT INTO users (username, password, country) VALUES (?, ?, ?)");
+
+            // PROCESS: binding parameters to statement
+            $sql->bind_param("sss", $username, $password, $location);
+
+            $isAdmin = false; //updating flag
+
+        }
 
         // PROCESS: executing the statement
         try {
 
             $sql->execute();
 
-            // VARIABLE DECLARATION:
-            $response = [
-                'isSuccess' => true
-            ];
+            // PROCESS: checking if user is logging in as the admin
+            if ($isAdmin) {
+
+                // PROCESS: retrieving the results of the SQL query
+                $result = $sql->get_result();
+
+                // PROCESS: checking if admin exists in the database
+                if ($result->num_rows > 0) { //exists
+
+                    // VARIABLE DECLARATION:
+                    $response = [
+                        'isSuccess' => true,
+                        'isAdmin' => $isAdmin
+                    ];
+
+                } else { //does not exist
+
+                    // VARIABLE DECLARATION:
+                    $response = [
+                        'isSuccess' => false,
+                        'isAdmin' => $isAdmin,
+                        'errorMsg' => "Admin does not exist in database."
+                    ];
+
+                }
+
+            } else {
+
+                // VARIABLE DECLARATION:
+                $response = [
+                    'isSuccess' => true,
+                    'isAdmin' => $isAdmin
+                ];
+
+            }
 
             // OUTPUT:
             echo json_encode($response);
@@ -208,8 +257,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <meta charset="UTF-8">
         <meta name="author" content="Amy Huang & Anoushka Jawale">
         <meta name="creation_date" content="July 10, 2024">
-        <meta name="last_updated" content="July 11, 2024">
-        <meta name="description" content="This is our work for Assignment 3 of CSI 3140.">
+        <meta name="last_updated" content="July 31, 2024">
+        <meta name="description" content="This is our work for Assignment 4 of CSI 3140.">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -228,33 +277,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+        <!--SCRIPT-->
+        <script src="js/database.js"></script>
     </head>
 
     <body>
-    <h1>Sign up</h1>
+        <!--HEADING-->
+        <h1>Enter Game Session</h1>
 
-    <div id="form-bg">
-        <form id="myForm" onsubmit="sendForm(); return false;">
-            <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
+        <!--GAME SESSION FORM-->
+        <div id="form-bg">
+            <form id="myForm" onsubmit="sendForm(); return false;">
+                <label for="name">Name:</label><br>
+                <input type="text" id="name" name="name" required><br><br>
 
-            <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required><br><br>
 
-            <label for="location">Location:</label><br>
-            <input type="text" id="location" name="location" required><br><br>
+                <label for="location">Location:</label><br>
+                <input type="text" id="location" name="location" required><br><br>
 
-            <button type="submit">Submit</button>
-            <input type="hidden" name="action" value="sendForm">
-        </form>
-</div>
+                <button type="submit">Submit</button>
+                <input type="hidden" name="action" value="sendForm">
+            </form>
+        </div>
+
         <!--FOOTER-->
         <footer>
             <p>1D PACMAN 2024</p>
         </footer>
-
-        <!--SCRIPT-->
-        <script src="js/user_input.js"></script>
-
     </body>
 </html>
