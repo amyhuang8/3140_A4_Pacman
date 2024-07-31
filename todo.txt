@@ -10,3 +10,13 @@ admin login:
 
 db:
 - 2 tables: one with all user info (username, location, high score) & 2nd for leaderboard (username and high score)
+
+
+
+TODO as of July 31:
+- update portfolios
+- update documentations (how to run)
+- rename database tables to capitalized names
+- close db connections in the php
+- clean code & comments
+- fix form CSS for submit button
