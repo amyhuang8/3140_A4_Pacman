@@ -1,10 +1,37 @@
 <?php
+
+require_once('../config/_config.php');
+include '../app/models/Game.php';
+
+session_start();
+
+// PROCESS: checking if game state already exists in session
+if (isset($_SESSION['game'])) { //exists
+    $game = $_SESSION['game'];
+} else { //does not
+    // VARIABLE DECLARATION: new game
+    $game = new Game();
+    $_SESSION['game'] = $game;
+    error_log("we are here");
+}
+
+// PROCESS: checking for POST req. from front-end
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
+    // PROCESS: handling AJAX
     if ($_POST['action'] === "clearLeaderboard") {
-        $_SESSION['leaderboard'] = [];
+
+        // PROCESS: clearing the leaderboard
+        $game->clearLeaderboard();
+        $_SESSION['game'] = $game; //updating session var.
+
+        // OUTPUT:
+        echo json_encode("The leaderboard has been cleared!");
+        exit;
+
     }
 }
+
 ?>
 
 <!DOCTYPE html>
@@ -14,8 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <meta charset="UTF-8">
         <meta name="author" content="Amy Huang & Anoushka Jawale">
         <meta name="creation_date" content="July 10, 2024">
-        <meta name="last_updated" content="July 11, 2024">
-        <meta name="description" content="This is our work for Assignment 3 of CSI 3140.">
+        <meta name="last_updated" content="July 31, 2024">
+        <meta name="description" content="This is our work for Assignment 4 of CSI 3140.">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -29,21 +56,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <link rel="manifest" href="resources/site.webmanifest">
 
         <!--STYLESHEET-->
-        <link rel="stylesheet" href="css/sign_up.css">
+        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/admin.css">
 
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!--SCRIPT-->
+        <script src="js/database.js"></script>
     </head>
 
     <body>
-        <button onclick="clearLeaderboard()">Clear leaderboard</button>
-
+        <!--ACTION BUTTONS-->
+        <button id="clearLeaderboard-button" onclick="clearLeaderboard();">Clear Leaderboard</button>
+        <a id="return-home-button" href="index.php">Return Home</a>
+        
         <!--FOOTER-->
         <footer>
             <p>1D PACMAN 2024</p>
         </footer>
-
-        <!--SCRIPT-->
-        <script src="js/database.js"></script>
     </body>
 </html>

@@ -57,6 +57,7 @@ function sendForm() {
 }
 
 function clearLeaderboard() {
+
     // PROCESS: sending POST req. w/ AJAX to server
     $.ajax({
         type: 'POST',
@@ -64,7 +65,8 @@ function clearLeaderboard() {
         data: { action: 'clearLeaderboard' },
         dataType: 'json',
         success: function (response) {
-            console.log(response)
+            // OUTPUT:
+            window.alert(response);
         },
         error: function (xhr, status) { //error-handling
             console.error("Network Error! Status Code: " + status + " Error: " + xhr.responseText);

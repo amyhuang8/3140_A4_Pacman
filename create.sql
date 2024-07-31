@@ -16,6 +16,7 @@ CREATE TABLE leaderboard (
     FOREIGN KEY (username) REFERENCES users(username)
 );
 
+# INSERTING ADMIN LOGIN INTO DATABASE
 INSERT INTO users(username, password, country) VALUES ("admin", "adminpassword", "adminoffice");
 
 SELECT * FROM users;

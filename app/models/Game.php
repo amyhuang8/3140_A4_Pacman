@@ -314,7 +314,7 @@ class Game
         $this->level++; //updating level
     }
 
-    // GETTER FUNCTIONS-------------------------------------------------------------------------------------------------
+    // GETTER & SETTER FUNCTIONS----------------------------------------------------------------------------------------
     /**
      * This is a getter function for the direction in which Pacman is moving.
      * @return string Pacman's direction
@@ -383,6 +383,16 @@ class Game
     {
         // OUTPUT:
         return $this->leaderboard;
+    }
+
+    /**
+     * This is a setter function to clear the leaderboard.
+     * @return void
+     */
+    public function clearLeaderboard()
+    {
+        // INITIALIZATION: clearing leaderboard array
+        $this->leaderboard = [];
     }
 
     /**
