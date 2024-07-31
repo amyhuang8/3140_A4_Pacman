@@ -21,3 +21,4 @@ TODO as of July 31:
 - update documentation (how to run)
 - clean code & comments
 - fix form CSS for submit button
+- consider moving all dtaabase connections to _config.php
