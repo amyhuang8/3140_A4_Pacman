@@ -90,6 +90,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     </head>
 
     <body>
+        <!--HEADER-->
+        <header>
+            <h1>Administrator Actions</h1>
+        </header>
+
         <!--ACTION BUTTONS-->
         <button id="clearLeaderboard-button" onclick="clearLeaderboard();">Clear Leaderboard</button>
         <a id="return-home-button" href="index.php">Return Home</a>

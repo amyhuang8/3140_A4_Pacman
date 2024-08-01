@@ -162,8 +162,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     </head>
 
     <body>
-        <!--HEADING-->
-        <header><h1>Enter Game Session</h1></header>
+        <!--HEADER-->
+        <header>
+            <h1>Enter Game Session</h1>
+        </header>
 
         <!--GAME SESSION FORM-->
         <form id="myForm" onsubmit="sendForm(); return false;">

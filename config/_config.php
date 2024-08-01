@@ -1,5 +1,12 @@
 <?php
 
+/*
+ * Author: Amy Huang & Anoushka Jawale
+ * Creation Date: July 10, 2024
+ * Last Updated: August 1, 2024
+ * Description: This PHP file contains the configuration information for 1D Pacman.
+ */
+
 // VARIABLE DECLARATION: database information
 $servername = getenv('DB_SERVER') ?: 'localhost';
 $username = getenv('DB_USERNAME') ?: 'root';
