@@ -44,12 +44,16 @@ function startGame() {
     // VARIABLE DECLARATION:
     const beginButton = document.getElementById("begin-button");
     const leaderboardButton = document.getElementById("leaderboard-button");
+    const exitButton = document.getElementById("exit-button");
 
     beginButton.disabled = true; //disabling begin button
     beginButton.style.cursor = "not-allowed"; //disabling cursor
 
     leaderboardButton.disabled = true; //disabling leaderboard button
     leaderboardButton.style.cursor = "not-allowed"; //disabling cursor
+
+    exitButton.disabled = true; //disabling exit button
+    exitButton.style.cursor = "not-allowed"; //disabling cursor
 
 }
 
@@ -95,12 +99,16 @@ function endGame() {
     // VARIABLE DECLARATION:
     const button = document.getElementById("begin-button");
     const leaderboardButton = document.getElementById("leaderboard-button");
+    const exitButton = document.getElementById("exit-button");
 
     button.disabled = false; //re-enabling begin button
     button.style.cursor = "pointer"; //resetting cursor
 
     leaderboardButton.disabled = false; //re-enabling leaderboard button
     leaderboardButton.style.cursor = "pointer"; //resetting cursor
+
+    exitButton.disabled = false; //re-enabling exit button
+    exitButton.style.cursor = "pointer"; //resetting cursor
 
     clearInterval(ghostTimer); //clearing ghost movement interval
     clearInterval(moveTimer); //clearing continuous movement

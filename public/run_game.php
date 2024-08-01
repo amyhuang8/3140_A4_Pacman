@@ -198,6 +198,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     if ($_POST['action'] === "resetGame") { //resetting the game
 
+        // VARIABLE DECLARATION:
+        $name = $game->getName();
+        $highScore = $game->getHighScore();
+
+        // PROCESS: preparing the SQL query to update a record
+        $sql = $conn->prepare("UPDATE users SET highscore=? WHERE username=?");
+
+        // PROCESS: binding parameters to statement
+        $sql->bind_param("is", $highScore, $name);
+
+        // PROCESS: executing the statement
+        try {
+
+            $sql->execute();
+            $sql->close();
+
+        } catch (Exception $e) {
+
+            // OUTPUT:
+            error_log($e->getMessage());
+
+        }
+
         $game->resetGame();
         $_SESSION['game'] = $game; //updating session var.
 
@@ -206,7 +229,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             'board' => $game->getBoard(),
             'directionPM' => $game->getDirectionPM(),
             'directionGhost' => $game->getDirectionGhost(),
-            'highScore' => $game->getHighScore(),
+            'highScore' => $highScore,
             'level' => $game->getLevel(),
         ];
 
@@ -256,6 +279,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <h1 id="high-score">High Score: 0</h1>
             <h1 id="level">Level: 1</h1>
             <button id="begin-button" onclick="resetGame();">Start</button>
+            <form action="logout.php" method="post">
+                <button id="exit-button" type="submit">
+                    <img src="resources/icon_home.png" alt="Home icon">
+                </button>
+            </form>
         </header>
 
         <!--GAME BOARD-->
