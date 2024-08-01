@@ -5,21 +5,7 @@ Last Updated: August 1, 2024
 Description: This CSS file contains styles for the admin.php file.
 */
 
-/* GENERAL STYLES */
-@font-face {
-    font-family: 'Pixieboy';
-    src: url('../fonts/Pixeboy-z8XGD.ttf') format('truetype');
-    font-weight: normal;
-    font-style: normal;
-}
-
-body {
-    display: flex;
-    background-color: #0D1321;
-    overflow: hidden;
-    justify-content: center;
-}
-
+/* ACTION STYLES */
 #clearLeaderboard-button {
     position: absolute;
     left: 50%;

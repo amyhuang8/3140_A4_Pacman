@@ -3,23 +3,12 @@
 /*
  * Author: Amy Huang & Anoushka Jawale
  * Creation Date: July 10, 2024
- * Last Updated: June 12, 2024
+ * Last Updated: August 1, 2024
  * Description: This PHP file contains the runtime logic for 1D Pacman.
  */
 
-// VARIABLE DECLARATION: database information
-$servername = "localhost";
-$username = "root";
-$password = "password123";
-$dbname = "pacman";
-
-// PROCESS: creating new db connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// PROCESS: checking db connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// VARIABLE DECLARATION: db connection
+global $conn;
 
 require_once('../config/_config.php');
 include '../app/models/Game.php';
@@ -37,6 +26,8 @@ if (isset($_SESSION['game'])) { //exists
 
 // PROCESS: checking for POST req. from front-end
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
+
+    header('Content-Type: application/json'); //setting header
 
     // PROCESS: handling AJAX
     if ($_POST['action'] === "moveGhost") { //moving the ghost
@@ -256,9 +247,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-        <!--SCRIPT-->
-        <script type="text/javascript" src="js/run_game.js"></script>
     </head>
 
     <body>
@@ -316,5 +304,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <button id="leaderboard-button" onclick="displayLeaderboard();">Show Leaderboard</button>
             <p>1D PACMAN 2024</p>
         </footer>
+
+        <!--SCRIPT-->
+        <script type="text/javascript" src="js/run_game.js"></script>
     </body>
 </html>

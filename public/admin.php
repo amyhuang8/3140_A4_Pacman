@@ -1,18 +1,14 @@
 <?php
 
-// VARIABLE DECLARATION: database information
-$servername = "localhost";
-$username = "root";
-$password = "password123";
-$dbname = "pacman";
+/*
+ * Author: Amy Huang & Anoushka Jawale
+ * Creation Date: July 31, 2024
+ * Last Updated: August 1, 2024
+ * Description: This PHP file contains the Administrator logic for 1D Pacman.
+ */
 
-// PROCESS: creating new db connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// PROCESS: checking db connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+// VARIABLE DECLARATION: db connection
+global $conn;
 
 require_once('../config/_config.php');
 include '../app/models/Game.php';

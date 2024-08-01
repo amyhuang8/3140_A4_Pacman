@@ -65,7 +65,6 @@ function endGame() {
         data: { action: 'updateLeaderboard' },
         dataType: 'json',
         success: function (response) {
-            console.log("here");
 
             // VARIABLE DECLARATION:
             const isSuccess = response["isSuccess"];
@@ -364,33 +363,7 @@ function moveLeft() {
         dataType: 'json',
         success: function (response) {
 
-            // VARIABLE DECLARATION:
-            const board = response["board"];
-            const directionPM = response["directionPM"];
-            const directionGhost = response["directionGhost"];
-            const isFruitEaten = response["isFruitEaten"];
-            const score = response["score"];
-            const level = response["level"];
-            const isGameAdvanced = response["isGameAdvanced"];
-            const isGameOver = response["isGameOver"];
-
-            renderGame(board, directionPM, directionGhost); //render the updated game board
-            document.getElementById("score").innerHTML = "Score: " + score; //updating score text
-
-            // PROCESS: checking if a fruit is eaten
-            if (isFruitEaten) {
-                document.getElementById("sfx-fruit").play(); //playing fruit sfx
-            }
-
-            // PROCESS: checking for level up
-            if (isGameAdvanced) {
-                advanceLevel(level);
-            }
-
-            // PROCESS: checking for game over
-            if (isGameOver) {
-                endGame();
-            }
+            handleMovementResponse(response); //calling helper function
 
         },
         error: function (xhr, status) { //error-handling
@@ -413,39 +386,49 @@ function moveRight() {
         dataType: 'json',
         success: function (response) {
 
-            // VARIABLE DECLARATION:
-            const board = response["board"];
-            const directionPM = response["directionPM"];
-            const directionGhost = response["directionGhost"];
-            const isFruitEaten = response["isFruitEaten"];
-            const score = response["score"];
-            const level = response["level"];
-            const isGameAdvanced = response["isGameAdvanced"];
-            const isGameOver = response["isGameOver"];
-
-            renderGame(board, directionPM, directionGhost); //render the updated game board
-            document.getElementById("score").innerHTML = "Score: " + score; //updating score text
-
-            // PROCESS: checking if a fruit is eaten
-            if (isFruitEaten) {
-                document.getElementById("sfx-fruit").play(); //playing fruit sfx
-            }
-
-            // PROCESS: checking for level up
-            if (isGameAdvanced) {
-                advanceLevel(level);
-            }
-
-            // PROCESS: checking for game over
-            if (isGameOver) {
-                endGame();
-            }
+            handleMovementResponse(response); //calling helper function
 
         },
         error: function (xhr, status) {  //error-handling
             console.error("Network Error! Status Code: " + status + " Error: " + xhr.responseText);
         }
     });
+
+}
+
+/**
+ * This helper function handles the AJAX response after Pacman moves.
+ * @param response the JSON server response
+ */
+function handleMovementResponse(response) {
+
+    // VARIABLE DECLARATION:
+    const board = response["board"];
+    const directionPM = response["directionPM"];
+    const directionGhost = response["directionGhost"];
+    const isFruitEaten = response["isFruitEaten"];
+    const score = response["score"];
+    const level = response["level"];
+    const isGameAdvanced = response["isGameAdvanced"];
+    const isGameOver = response["isGameOver"];
+
+    renderGame(board, directionPM, directionGhost); //render the updated game board
+    document.getElementById("score").innerHTML = "Score: " + score; //updating score text
+
+    // PROCESS: checking if a fruit is eaten
+    if (isFruitEaten) {
+        document.getElementById("sfx-fruit").play(); //playing fruit sfx
+    }
+
+    // PROCESS: checking for level up
+    if (isGameAdvanced) {
+        advanceLevel(level);
+    }
+
+    // PROCESS: checking for game over
+    if (isGameOver) {
+        endGame();
+    }
 
 }
 
