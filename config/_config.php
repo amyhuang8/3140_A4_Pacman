@@ -14,7 +14,7 @@ $password = getenv('DB_PASSWORD') ?: 'password123';
 $dbname = 'pacman';
 
 // PROCESS: reading the SQL file for db creation
-$sqlFile = '../create.sql';
+$sqlFile = '../app/db/create.sql';
 $sql = file_get_contents($sqlFile);
 
 if ($sql === false) {

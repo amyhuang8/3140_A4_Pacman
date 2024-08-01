@@ -17,3 +17,4 @@ TODO as of August 1:
 - close db connections in the php
 - update portfolios
 - update documentation (how to run)
+- add validation to login forms according to SQL constraints (char length)
