@@ -3,7 +3,7 @@
 // VARIABLE DECLARATION: database information
 $servername = "localhost";
 $username = "root";
-$password = "password";
+$password = "password123";
 $dbname = "pacman";
 
 // PROCESS: creating new db connection
@@ -83,7 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <link rel="manifest" href="resources/site.webmanifest">
 
         <!--STYLESHEET-->
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="css/admin.css">
 
         <!--JQUERY SCRIPT-->

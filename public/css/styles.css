@@ -1,0 +1,50 @@
+/*
+Author: Amy Huang & Anoushka Jawale
+Creation Date: August 1, 2024
+Last Updated: August 1, 2024
+Description: This CSS file contains general styles for the game.
+*/
+
+/* GENERAL STYLES */
+@font-face {
+    font-family: 'Pixieboy';
+    src: url('../fonts/Pixeboy-z8XGD.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    display: flex;
+    background-color: #0D1321;
+    overflow: hidden;
+    justify-content: center;
+}
+
+header {
+    position: absolute;
+    top: 0;
+    width: 100%;
+
+    font-family: 'Pixieboy', sans-serif;
+    color: lightpink;
+    font-size: 4vh;
+    max-height: 3vh;
+    letter-spacing: 0.1vh;
+    text-align: center;
+}
+
+p {
+    padding: 0;
+    font-family: 'Pixieboy', sans-serif;
+    font-size: 4vw;
+    max-height: 3vh;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+
+    color: lightpink;
+    text-align: center;
+}

@@ -10,7 +10,7 @@
 // VARIABLE DECLARATION: database information
 $servername = "localhost";
 $username = "root";
-$password = "password";
+$password = "password123";
 $dbname = "pacman";
 
 // PROCESS: creating new db connection
@@ -251,10 +251,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <link rel="manifest" href="resources/site.webmanifest">
 
         <!--STYLESHEET-->
-        <link rel="stylesheet" href="css/index.css">
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/run_game.css">
 
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!--SCRIPT-->
+        <script type="text/javascript" src="js/run_game.js"></script>
     </head>
 
     <body>
@@ -312,8 +316,5 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
             <button id="leaderboard-button" onclick="displayLeaderboard();">Show Leaderboard</button>
             <p>1D PACMAN 2024</p>
         </footer>
-
-        <!--SCRIPT-->
-        <script type="text/javascript" src="js/run_game.js"></script>
     </body>
 </html>

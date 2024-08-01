@@ -201,8 +201,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <link rel="icon" type="image/png" sizes="16x16" href="resources/favicon-16x16.png">
         <link rel="manifest" href="resources/site.webmanifest">
 
-        <!--STYLESHEET-->
-        <link rel="stylesheet" href="css/sign_up.css">
+        <!--STYLESHEETS-->
+        <link rel="stylesheet" href="css/styles.css">
+        <link rel="stylesheet" href="css/index.css">
 
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -213,24 +214,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
     <body>
         <!--HEADING-->
-        <h1>Enter Game Session</h1>
+        <header><h1>Enter Game Session</h1></header>
 
         <!--GAME SESSION FORM-->
-        <div id="form-bg">
-            <form id="myForm" onsubmit="sendForm(); return false;">
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name" required><br><br>
+        <form id="myForm" onsubmit="sendForm(); return false;">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" required><br><br>
 
-                <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password" required><br><br>
+            <label for="password">Password:</label><br>
+            <input type="password" id="password" name="password" required><br><br>
 
-                <label for="location">Location:</label><br>
-                <input type="text" id="location" name="location" required><br><br>
+            <label for="location">Location:</label><br>
+            <input type="text" id="location" name="location" required><br><br>
 
-                <button type="submit">Submit</button>
-                <input type="hidden" name="action" value="sendForm">
-            </form>
-        </div>
+            <button id="enter-game-button" type="submit">Submit</button>
+            <input type="hidden" name="action" value="sendForm">
+        </form>
 
         <!--FOOTER-->
         <footer>
