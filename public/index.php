@@ -10,8 +10,17 @@
 // VARIABLE DECLARATION: database information
 $servername = "localhost";
 $username = "root";
-$password = "password";
+$password = "password123";
 $dbname = "pacman";
+
+// PROCESS: reading the SQL file for db creation
+$sqlFile = '../create.sql';
+$sql = file_get_contents($sqlFile);
+
+if ($sql === false) { //error-handling
+    // OUTPUT:
+    die('Error reading SQL file.');
+}
 
 // PROCESS: creating new db connection
 $conn = new mysqli($servername, $username, $password, $dbname);
@@ -19,6 +28,39 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 // PROCESS: checking db connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
+}
+
+// PROCESS: checking if database already exists
+$dbExistsQuery = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbname'";
+$dbExistsResult = $conn->query($dbExistsQuery);
+
+if ($dbExistsResult->num_rows <= 0) { //doesn't already exist
+
+    // OUTPUT:
+    echo "Database '$dbname' does not exist. Proceeding with database creation.";
+
+    // PROCESS: splitting SQL content into individual queries
+    $sqlQueries = explode(';', $sql);
+
+    // PROCESS: running all SQL creation queries
+    foreach ($sqlQueries as $query) {
+
+        // VARIABLE DECLARATION:
+        $query = trim($query);
+
+        // PROCESS: checking that query is not empty
+        if (!empty($query)) {
+
+            // PROCESS: checking for success running query
+            if ($conn->query($query) === false) { //error-handling
+                // OUTPUT:
+                echo 'Error executing query: ' . $conn->error;
+            }
+
+        }
+
+    }
+
 }
 
 require_once('../config/_config.php');

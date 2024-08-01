@@ -1,3 +1,6 @@
+# CREATING DATABASE:
+CREATE DATABASE pacman;
+
 # CALLING DATABASE:
 USE pacman;
 
@@ -18,7 +21,3 @@ CREATE TABLE leaderboard (
 
 # INSERTING ADMIN LOGIN INTO DATABASE
 INSERT INTO users(username, password, country) VALUES ("admin", "adminpassword", "adminoffice");
-
-SELECT * FROM users;
-
-SELECT * FROM leaderboard;
