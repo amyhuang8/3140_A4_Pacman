@@ -2,10 +2,13 @@
 
 /*
  * Author: Amy Huang & Anoushka Jawale
- * Creation Date: July 10, 2024
- * Last Updated: June 12, 2024
- * Description: This PHP file contains the runtime logic for 1D Pacman.
+ * Creation Date: July 23, 2024
+ * Last Updated: August 1, 2024
+ * Description: This PHP file contains the home login logic for 1D Pacman.
  */
+
+// VARIABLE DECLARATION: db connection
+global $conn;
 
 require_once('../config/_config.php');
 include '../app/models/Game.php';
@@ -24,122 +27,102 @@ if (isset($_SESSION['game'])) { //exists
 // PROCESS: checking for POST req. from front-end
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
+    header('Content-Type: application/json'); //setting header
+
     // PROCESS: handling AJAX
-    if ($_POST['action'] === "moveGhost") { //moving the ghost
+    if ($_POST["action"] == "sendForm") { //sending game session form data
 
-        $game->moveGhost();
+        // VARIABLE DECLARATION:
+        $name = htmlspecialchars($_POST['name']);
+        $game->setName($name); //updating username
         $_SESSION['game'] = $game; //updating session var.
 
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'score' => $game->getScore(),
-            'isGameOver' => $game->isGameOver(),
-        ];
+        $password = htmlspecialchars($_POST['password']);
+        $location = htmlspecialchars($_POST['location']);
 
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
+        // PROCESS: checking for admin login
+        if ($name === "admin" && $password === "adminpassword" && $location === "adminoffice") {
 
-    }
+            // PROCESS: preparing the SQL query
+            $sql = $conn->prepare("SELECT * FROM users WHERE username=? AND password=?");
 
-    if ($_POST['action'] === "moveLeftPacman") { //moving Pacman to the left
+            // PROCESS: binding parameters to statement
+            $sql->bind_param("ss", $name, $password);
 
-        $game->moveLeftPacman();
-        $_SESSION['game'] = $game; //updating session var.
+            $isAdmin = true; //updating flag
 
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'isFruitEaten' => $game->isFruitEaten(),
-            'score' => $game->getScore(),
-            'level' => $game->getLevel(),
-            'isGameAdvanced' => $game->isGameAdvanced(),
-            'isGameOver' => $game->isGameOver(),
-        ];
+        } else {
 
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
+            // PROCESS: preparing the SQL insertion
+            $sql = $conn->prepare("INSERT INTO users (username, password, country) VALUES (?, ?, ?)");
 
-    }
+            // PROCESS: binding parameters to statement
+            $sql->bind_param("sss", $name, $password, $location);
 
-    if ($_POST['action'] === "moveRightPacman") { //moving Pacman to the right
+            $isAdmin = false; //updating flag
 
-        $game->moveRightPacman();
-        $_SESSION['game'] = $game; //updating session var.
+        }
 
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'isFruitEaten' => $game->isFruitEaten(),
-            'score' => $game->getScore(),
-            'level' => $game->getLevel(),
-            'isGameAdvanced' => $game->isGameAdvanced(),
-            'isGameOver' => $game->isGameOver(),
-        ];
+        // PROCESS: executing the statement
+        try {
 
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
+            $sql->execute();
 
-    }
+            // PROCESS: checking if user is logging in as the admin
+            if ($isAdmin) {
 
-    if ($_POST['action'] === "advanceLevel") { //advancing the game level
+                // PROCESS: retrieving the results of the SQL query
+                $result = $sql->get_result();
 
-        $game->createNewBoard();
-        $_SESSION['game'] = $game; //updating session var.
+                // PROCESS: checking if admin exists in the database
+                if ($result->num_rows > 0) { //exists
 
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-        ];
+                    // VARIABLE DECLARATION:
+                    $response = [
+                        'isSuccess' => true,
+                        'isAdmin' => $isAdmin
+                    ];
 
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
+                } else { //does not exist
 
-    }
+                    // VARIABLE DECLARATION:
+                    $response = [
+                        'isSuccess' => false,
+                        'isAdmin' => $isAdmin,
+                        'errorMsg' => "Admin does not exist in database."
+                    ];
 
-    if ($_POST['action'] === "displayLeaderboard") { //showing the leaderboard
+                }
 
-        // VARIABLE DECLARATION:
-        $response = [
-            'leaderboard' => $game->getLeaderboard(),
-        ];
+            } else {
 
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
+                // VARIABLE DECLARATION:
+                $response = [
+                    'isSuccess' => true,
+                    'isAdmin' => $isAdmin
+                ];
 
-    }
+            }
 
-    if ($_POST['action'] === "resetGame") { //resetting the game
+            $sql->close(); //closing sql
 
-        $game->resetGame();
-        $_SESSION['game'] = $game; //updating session var.
+            // OUTPUT:
+            echo json_encode($response);
+            exit;
 
-        // VARIABLE DECLARATION:
-        $response = [
-            'board' => $game->getBoard(),
-            'directionPM' => $game->getDirectionPM(),
-            'directionGhost' => $game->getDirectionGhost(),
-            'highScore' => $game->getHighScore(),
-            'level' => $game->getLevel(),
-        ];
+        } catch (Exception $e) {
 
-        // OUTPUT:
-        echo json_encode($response);
-        exit;
+            // VARIABLE DECLARATION:
+            $response = [
+                'isSuccess' => false,
+                'errorMsg' => $e->getMessage()
+            ];
 
+            // OUTPUT:
+            echo json_encode($response);
+            exit;
+
+        }
     }
 
 }
@@ -153,8 +136,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <meta charset="UTF-8">
         <meta name="author" content="Amy Huang & Anoushka Jawale">
         <meta name="creation_date" content="July 10, 2024">
-        <meta name="last_updated" content="July 11, 2024">
-        <meta name="description" content="This is our work for Assignment 3 of CSI 3140.">
+        <meta name="last_updated" content="July 31, 2024">
+        <meta name="description" content="This is our work for Assignment 4 of CSI 3140.">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
@@ -167,70 +150,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <link rel="icon" type="image/png" sizes="16x16" href="resources/favicon-16x16.png">
         <link rel="manifest" href="resources/site.webmanifest">
 
-        <!--STYLESHEET-->
+        <!--STYLESHEETS-->
+        <link rel="stylesheet" href="css/styles.css">
         <link rel="stylesheet" href="css/index.css">
 
         <!--JQUERY SCRIPT-->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <!--SCRIPT-->
+        <script src="js/index.js"></script>
     </head>
 
     <body>
-        <!--HEADER/GAME STATS-->
+        <!--HEADER-->
         <header>
-            <h1 id="score">Score: 0</h1>
-            <h1 id="high-score">High Score: 0</h1>
-            <h1 id="level">Level: 1</h1>
-            <button id="begin-button" onclick="resetGame();">Start</button>
+            <h1>Enter Game Session</h1>
         </header>
 
-        <!--GAME BOARD-->
-        <div class="game-borders" style="height: 25vh;">
-            <div class="game-borders" style="height: 20vh;">
-                <div id="game-container" class="game-board"></div>
-            </div>
-        </div>
+        <!--GAME SESSION FORM-->
+        <form id="myForm" onsubmit="sendForm(); return false;">
+            <label for="name">Name:</label><br>
+            <input type="text" maxLength="15" id="name" name="name" required><br><br>
 
-        <!--INSTRUCTIONS MODAL-->
-        <div id="instructionsModal" class="modal">
-            <div class="modal-content">
-                <h1 class="modal-text">Instructions:</h1>
-                <h1 class="modal-text">Use A/D or left/right arrow keys to change direction!</h1>
-                <h2 class="modal-text">Click outside to START.</h2>
-                <br>
-            </div>
-        </div>
+            <label for="password">Password:</label><br>
+            <input type="password" maxLength="30" id="password" name="password" required><br><br>
 
-        <!--GAME OVER MODAL-->
-        <div id="gameOverModal" class="modal">
-            <div class="modal-content">
-                <h1 class="modal-text">Game over!</h1>
-                <h1 class="modal-text">Do you want to play again?</h1>
-                <button id="restart">Restart</button>
-            </div>
-        </div>
+            <label for="location">Location:</label><br>
+            <input type="text" maxLength="20" id="location" name="location" required><br><br>
 
-        <!--LEADERBOARD MODAL-->
-        <div id="leaderboardModal" class="modal">
-            <div class="modal-content">
-                <h1 class="modal-text">Leaderboard:</h1>
-                <ul id="leaderboardList" class="modal-text"></ul>
-                <button id="closeLeaderboard">Close</button>
-            </div>
-        </div>
-
-        <!--AUDIOS-->
-        <audio id="bgm" src="resources/audio/beat_pacman.mp3" loop></audio>
-        <audio id="sfx-fruit" src="resources/audio/sfx_fruit.mp3"></audio>
-        <audio id="sfx-level-up" src="resources/audio/sfx_level-up.mp3"></audio>
-        <audio id="sfx-game-over" src="resources/audio/sfx_game-over.mp3"></audio>
+            <button id="enter-game-button" type="submit">Submit</button>
+            <input type="hidden" name="action" value="sendForm">
+        </form>
 
         <!--FOOTER-->
         <footer>
-            <button id="leaderboard-button" onclick="displayLeaderboard();">Show Leaderboard</button>
             <p>1D PACMAN 2024</p>
         </footer>
-
-        <!--SCRIPT-->
-        <script type="text/javascript" src="js/index.js"></script>
     </body>
 </html>

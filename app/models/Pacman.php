@@ -45,6 +45,7 @@ class Pacman
         // OUTPUT:
         return $this->position;
     }
+
     /**
      * This is a setter function for Pacman's position.
      * @param int $newPosition the new position on the game board

@@ -1,0 +1,47 @@
+/*
+Author: Amy Huang & Anoushka Jawale
+Creation Date: July 31, 2024
+Last Updated: August 1, 2024
+Description: This CSS file contains styles for the admin.php file.
+*/
+
+/* ACTION STYLES */
+#clearLeaderboard-button {
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
+
+    background-color: pink;
+    font-size: 4vw;
+    letter-spacing: 0.2vw;
+    font-family: 'Pixieboy', sans-serif;
+    padding: 5px;
+    cursor: pointer;
+    border: 2px solid #F0EBD8;
+}
+
+#clearLeaderboard-button:hover {
+    background-color: lightpink;
+}
+
+#return-home-button {
+    position: absolute;
+    left: 50%;
+    top: 60%;
+    transform: translate(-50%, -50%);
+
+    background-color: pink;
+    font-size: 4vw;
+    letter-spacing: 0.2vw;
+    font-family: 'Pixieboy', sans-serif;
+    text-decoration: none;
+    color: black;
+    padding: 5px;
+    cursor: pointer;
+    border: 2px solid #F0EBD8;
+}
+
+#return-home-button:hover {
+    background-color: lightpink;
+}
