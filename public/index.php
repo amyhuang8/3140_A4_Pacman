@@ -170,13 +170,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <!--GAME SESSION FORM-->
         <form id="myForm" onsubmit="sendForm(); return false;">
             <label for="name">Name:</label><br>
-            <input type="text" id="name" name="name" required><br><br>
+            <input type="text" maxLength="15" id="name" name="name" required><br><br>
 
             <label for="password">Password:</label><br>
-            <input type="password" id="password" name="password" required><br><br>
+            <input type="password" maxLength="30" id="password" name="password" required><br><br>
 
             <label for="location">Location:</label><br>
-            <input type="text" id="location" name="location" required><br><br>
+            <input type="text" maxLength="20" id="location" name="location" required><br><br>
 
             <button id="enter-game-button" type="submit">Submit</button>
             <input type="hidden" name="action" value="sendForm">
