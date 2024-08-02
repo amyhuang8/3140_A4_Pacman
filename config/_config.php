@@ -22,10 +22,10 @@ if ($sql === false) {
     die('Error reading SQL file.');
 }
 
-// PROCESS: creating new db connection
-$conn = new mysqli($servername, $username, $password, $dbname);
+// PROCESS: creating new server connection w/o specifying a database
+$conn = new mysqli($servername, $username, $password);
 
-// PROCESS: checking db connection
+// PROCESS: checking server connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -34,7 +34,7 @@ if ($conn->connect_error) {
 $dbExistsQuery = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = '$dbname'";
 $dbExistsResult = $conn->query($dbExistsQuery);
 
-if ($dbExistsResult->num_rows <= 0) { // database doesn't exist
+if ($dbExistsResult->num_rows <= 0) { //db doesn't exist
 
     // OUTPUT:
     echo "Database '$dbname' does not exist. Proceeding with database creation.";
@@ -44,15 +44,32 @@ if ($dbExistsResult->num_rows <= 0) { // database doesn't exist
 
     // PROCESS: running all SQL creation queries
     foreach ($sqlQueries as $query) {
+
         $query = trim($query);
 
-        if (!empty($query)) {
-            if ($conn->query($query) === false) {
+        // PROCESS: checking for empty query
+        if (!empty($query)) { //non-empty
+
+            if ($conn->query($query) === false) { //failed execution
                 // OUTPUT:
                 echo 'Error executing query: ' . $conn->error;
             }
+
         }
+
     }
+
+}
+
+// PROCESS: closing the connection & reconnecting to the the pacman db
+$conn->close();
+
+// PROCESS: creating new db connection to the newly created database
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// PROCESS: checking db connection
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
 // VARIABLE DECLARATION:
