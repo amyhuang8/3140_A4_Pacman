@@ -3,7 +3,7 @@
 /*
  * Author: Amy Huang & Anoushka Jawale
  * Creation Date: July 10, 2024
- * Last Updated: August 1, 2024
+ * Last Updated: August 2, 2024
  * Description: This PHP file contains the configuration information for 1D Pacman.
  */
 
@@ -52,7 +52,7 @@ if ($dbExistsResult->num_rows <= 0) { //db doesn't exist
 
             if ($conn->query($query) === false) { //failed execution
                 // OUTPUT:
-                echo 'Error executing query: ' . $conn->error;
+                die('Error executing query: ' . $conn->error);
             }
 
         }
