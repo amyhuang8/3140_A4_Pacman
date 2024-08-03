@@ -12,7 +12,7 @@ Amy Huang (300240777) & Anoushka Jawale (300233148)
 
 ### Steps to Running 
 - change config file (3140_A4_Pacmam/config/_config.php) to YOUR MySQL login info. If you are already in your root user chances are you will only have to change the password. 
-![Change your login info](resources/config.png)
+![Change your login info](public/resources/config.png)
 - start the MySQL server 
 - From this directory (3140_A4_Pacman) ensure you are on branch main, run "php -S localhost:4000 -t public" command in Git Bash/terminal to start the local PHP server. 
 - In Chrome, visit "http://localhost:4000/" to find the webpage. 
