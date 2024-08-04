@@ -54,8 +54,12 @@ The admin is able to clear the leaderboard, which goes to the backend to clear t
 The game interface is designed to be user-friendly. Below are screenshots of various states of the game interface.
 
 ### Screenshots
+
+#### Sign In 
+![Sign In](docs/design_system/signin.png)
+
 #### Main Menu
-![Main Menu](docs/design_system/main_menu_instructions.png)
+![Main Menu](docs/design_system/main_menu.png)
 
 #### Initial Game State
 ![Initial Game State](docs/design_system/initial_game_state.png)
@@ -67,7 +71,8 @@ The game interface is designed to be user-friendly. Below are screenshots of var
 ![Game Over](docs/design_system/game_over.png)
 
 ### Checking the leaderboard
-![Leaderboard](docs/design_system/leaderboard_design.png)
+![Leaderboard With No Scores (cleared leaderboard)](docs/design_system/l_no_scores.png)
+![Leaderboard With Scores](docs/design_system/l_scores.png)
 
 ## Visual Design System
 Can be found in the design_system folder, along with the assets used.
