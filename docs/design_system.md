@@ -1,6 +1,6 @@
 # Pacman Game Design System
 
-This document outlines the visual design system for the 1D Pacman game we created for CSI 3140 Assignment 2.
+This document outlines the visual design system for the 1D Pacman game we created for CSI 3140 Assignment 4.
 It includes the structural components, colour palette, and font styles used throughout the game.
 
 ## Structural Components
@@ -12,11 +12,11 @@ It includes the structural components, colour palette, and font styles used thro
   ![Play Area Design](design_system/play_area_design.png)
 - **Leaderboard**: The modal that displays the top 10 scores.
   ![Leaderboard Design](design_system/l_scores.png)
-  The modal displays not scores if the admin has cleared the leaderboard.
+  The modal displays no scores if the admin has cleared the leaderboard.
     ![Leaderboard Design](design_system/l_no_scores.png)
 - **Restart Menu**: This overlay modal appears when the game is over and contains a restart button.
   ![Restart Menu Design](design_system/game_over.png)
-- **Footer**: Located at the bottom, it includes the name of game.
+- **Footer**: Located at the bottom, it includes the name of the game.
   ![Footer Design](design_system/footer_design.png)
 
 
@@ -24,7 +24,7 @@ It includes the structural components, colour palette, and font styles used thro
 - **Primary Colour**: #0D1321 (Dark Blue) — Used for the background colour of the game board body.
 - **Secondary Colour**: rgb(240, 235, 216, 0.8) (Beige) — Used for the backgrounds of the initial instruction menu, the restart menu, and the leaderboard menu.
 - **Accent Colour**: Lightpink — Used for the background colour of the hover effect for the start/leaderboard buttons and the colour of the footer.
-- **Text Colour**: White — Used for the colour of the score board display in the header. // Black — Used for the modal text in the instructions/restart/leaderboard menus.
+- **Text Colour**: White — Used for the colour of the scoreboard display in the header. // Black — Used for the modal text in the instructions/restart/leaderboard menus.
 
 ## Fonts and Sizes
 - **Primary Font**: 'Pixieboy', sans-serif - Used for all text contained in-game (Used for h1, #begin-button, modal-text, #restart, and p elements) 
