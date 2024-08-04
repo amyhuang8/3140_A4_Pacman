@@ -3,7 +3,7 @@
 /*
  * Author: Amy Huang & Anoushka Jawale
  * Creation Date: July 31, 2024
- * Last Updated: August 1, 2024
+ * Last Updated: August 4, 2024
  * Description: This PHP file contains the Administrator logic for 1D Pacman.
  */
 
@@ -97,7 +97,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 
         <!--ACTION BUTTONS-->
         <button id="clearLeaderboard-button" onclick="clearLeaderboard();">Clear Leaderboard</button>
-        <a id="return-home-button" href="index.php">Return Home</a>
+        <form action="logout.php" method="post">
+            <button id="return-home-button" type="submit">Return Home</button>
+        </form>
 
         <!--FOOTER-->
         <footer>

@@ -1,3 +1,10 @@
+/*
+Author: Amy Huang & Anoushka Jawale
+Creation Date: July 23, 2024
+Last Updated: August 4, 2024
+Description: This JavaScript file contains functions for manipulating the index.php file.
+*/
+
 /**
  * This function handles the action performed when the user submits the sign-up form.
  */

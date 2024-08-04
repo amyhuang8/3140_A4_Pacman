@@ -3,8 +3,8 @@
 /*
  * Author: Amy Huang & Anoushka Jawale
  * Creation Date: August 1, 2024
- * Last Updated: August 1, 2024
- * Description: This PHP file contains the exit logic to destroy the sessio info for 1D Pacman.
+ * Last Updated: August 4, 2024
+ * Description: This PHP file contains the exit logic to destroy the session info for 1D Pacman.
  */
 
 session_start();

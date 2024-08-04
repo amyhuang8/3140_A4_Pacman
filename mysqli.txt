@@ -1,3 +1,0 @@
-1. uncomment extension=mysqli in php.ini
-2. ensure folder is in the correct path (c:php)
-3. change config file to YOUR MySQL login info

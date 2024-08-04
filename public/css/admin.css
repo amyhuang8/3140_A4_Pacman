@@ -1,7 +1,7 @@
 /*
 Author: Amy Huang & Anoushka Jawale
 Creation Date: July 31, 2024
-Last Updated: August 1, 2024
+Last Updated: August 4, 2024
 Description: This CSS file contains styles for the admin.php file.
 */
 
@@ -35,7 +35,6 @@ Description: This CSS file contains styles for the admin.php file.
     font-size: 4vw;
     letter-spacing: 0.2vw;
     font-family: 'Pixieboy', sans-serif;
-    text-decoration: none;
     color: black;
     padding: 5px;
     cursor: pointer;

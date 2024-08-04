@@ -250,8 +250,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         <meta charset="UTF-8">
         <meta name="author" content="Amy Huang & Anoushka Jawale">
         <meta name="creation_date" content="July 10, 2024">
-        <meta name="last_updated" content="July 11, 2024">
-        <meta name="description" content="This is our work for Assignment 3 of CSI 3140.">
+        <meta name="last_updated" content="August 4, 2024">
+        <meta name="description" content="This is our work for Assignment 4 of CSI 3140.">
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
